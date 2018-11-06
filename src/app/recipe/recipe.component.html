@@ -1,0 +1,44 @@
+<hr>
+<div *ngIf="!loading">Loading...</div>
+<div *ngIf="loading">
+  <div class="row align-items-center">
+    <div class="col text-center">Image</div>
+    <div class="col text-center">Price</div>
+    <div class="col text-center">Count</div>
+    <div class="col text-center">ResultPrice</div>
+  </div>
+
+  <div class="" *ngFor="let ingredient of element.recipe.ingredients">
+    <div class="row align-items-center">
+      <div class="col text-center">
+        <div [ngClass]="{'image__sub':ingredient.ingredients.length > 3,'image--active':ingredient.showRecipe==true}"
+          (click)="showSubRecipe(ingredient)" class="image"><img src="https://crossoutdb.com/img/items/{{ ingredient.item.image }}"
+            alt=""></div>
+      </div>
+      <div class="col sell-buy-col text-center">
+        <div class="sell-buy-col__sell">
+          <div class="custom-control custom-radio">
+            <input checked (click)="changeSellPrice(ingredient,ingredient.formatSellPriceTimesNumber)" type="radio" id="customRadio1-{{ingredient.id}}"
+              name="customRadio-{{ingredient.id}}" class="custom-control-input">
+            <label class="custom-control-label" for="customRadio1-{{ingredient.id}}">Sell: {{
+              ingredient.item.formatSellPrice }}</label>
+          </div>
+        </div>
+        <div class="sell-buy-col__buy">
+          <div class="custom-control custom-radio">
+            <input (click)="changeSellPrice(ingredient,ingredient.formatBuyPriceTimesNumber)" type="radio" id="customRadio2-{{ingredient.id}}"
+              name="customRadio-{{ingredient.id}}" class="custom-control-input">
+            <label class="custom-control-label" for="customRadio2-{{ingredient.id}}">Buy: {{
+              ingredient.item.formatBuyPrice }}</label>
+          </div>
+        </div>
+      </div>
+      <div class="col text-center">{{ ingredient.number }}</div>
+      <div class="col text-center">{{ ingredient.resultPrice }}</div>
+    </div>
+    <div *ngIf="ingredient.showRecipe==true">
+      показать
+    </div>
+  </div>
+</div>
+<hr>

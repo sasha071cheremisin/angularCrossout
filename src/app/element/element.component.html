@@ -1,0 +1,22 @@
+<div class="row align-items-center">
+  <div class="col text-center" (click)="getRecipe(element)" >
+    <div [ngClass]="{'image--active':showRecipe==true}" class="image"><img class="image" src="https://crossoutdb.com/img/items/{{ element.image }}"
+      alt="{{ element.name }}" title="{{ element.name }}"></div>
+    </div>
+  <div class="col text-center">{{ element.id}}</div>
+  <div class="col sell-buy-col text-center">
+    <div class="sell-buy-col__sell">Sell: {{ element.formatSellPrice | number:'1.0-2'}}</div>
+    <div class="sell-buy-col__buy">Buy: {{ element.formatBuyPrice | number:'1.0-2'}}</div>
+  </div>
+  <div class="col text-center">
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input" id="firstBuild{{ element.id}}" (click)="getChangeCost(element)">
+      <label class="custom-control-label" for="firstBuild{{ element.id}}">{{ element.firstBuild }}</label>
+    </div>
+  </div>
+  <div class="col text-center">{{ element.formatCraftingSellSum | number:'1.0-2' }}</div>
+  <div class="col text-center">{{ element.income | number:'1.0-2' }}</div>
+</div>
+
+  <app-recipe [element] = "element" *ngIf="showRecipe" (priceChange)="getPriceTmp($event)"></app-recipe>
+ 

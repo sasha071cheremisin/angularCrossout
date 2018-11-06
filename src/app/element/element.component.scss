@@ -1,0 +1,20 @@
+.image {
+    cursor: pointer;
+    position: relative;
+    &::after {
+        content: '+';
+        color: white;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        font-weight: bold;
+        font-size: 20px;
+        line-height: 1em;
+        margin: 5px;
+    }
+    &--active {
+        &::after {
+            content: '-';
+        }
+    }
+}
