@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ElementsService } from '../elements.service';
-import { Recipe } from '../recipe'
 
 @Component({
   selector: 'app-recipe',
@@ -13,27 +12,28 @@ export class RecipeComponent implements OnInit {
   @Output() priceChange = new EventEmitter();
     
   loading: boolean = false;
-  showRecipe: boolean = false;
 
   constructor(private elementsService: ElementsService) { }
 
   ngOnInit() {
-    if(!this.element.recipe){
+    if(!this.element.ingredients){
       this.getRecipe(this.element.id);
+      this.getFirstBuild(this.element);
     } else {
       this.loading = true;
     }
   }
 
-  showSubRecipe(item) {
-    if(item.ingredients.length > 3) {
-      console.log(item);
-      if(item.showRecipe==false) {
-        item.showRecipe = true;
-        this.showRecipe = true;
+  showIngredients(ingredient) {
+    if(ingredient.ingredients.length > 3) {
+      if(ingredient.showRecipe) {
+        if(ingredient.showRecipe==false) {
+          ingredient.showRecipe = true;
+        } else {
+          ingredient.showRecipe = false;
+        }
       } else {
-        item.showRecipe = false;
-        this.showRecipe = false;
+        ingredient.showRecipe = true;
       }
     }
   }
@@ -49,19 +49,25 @@ export class RecipeComponent implements OnInit {
     this.priceChange.emit(this.element.recipe.sumPrise);
   }
 
+  getFirstBuild(ingredient) {
+    console.log(ingredient);
+  }
+
   private getRecipe(elementId) {
     this.elementsService.getRecipe(elementId)
     .subscribe((recipe) => {
-      this.element.recipe = new Recipe(recipe['recipe']['recipe']) ;
-      this.element.recipe.sumPrise = 0;
-      this.element.recipe.ingredients.forEach(ingredient => {
-        ingredient.resultPrice = +ingredient.formatSellPriceTimesNumber;
-        if(ingredient.ingredients.length > 3) {
-          ingredient.showRecipe = false;
-        }
-        this.element.recipe.sumPrise = this.element.recipe.sumPrise + ingredient.resultPrice;
+      this.element.ingredients = recipe['recipe']['recipe']['ingredients'];
+      // this.element.recipe.sumPrise = 0;
+      this.element.ingredients.forEach(ingredient => {
+        // ingredient.resultPrice = +ingredient.formatSellPriceTimesNumber;
+
+        // if(ingredient.ingredients.length > 3) {
+        //   ingredient.showRecipe = false;
+        // }
+
+        // this.element.recipe.sumPrise = this.element.recipe.sumPrise + ingredient.resultPrice;
       });
-      console.log(this.element.recipe);
+      // console.log(this.element);
       this.loading = true;
     });
   }

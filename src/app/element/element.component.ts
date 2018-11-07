@@ -20,6 +20,7 @@ export class ElementComponent implements OnInit {
   }
 
   getRecipe(element) {
+    // console.log('show recipe - ',element);
     if(this.showRecipe == false) {
       this.showRecipe = true;
     } else {
