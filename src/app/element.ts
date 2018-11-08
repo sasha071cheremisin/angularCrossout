@@ -11,15 +11,16 @@ export class Element {
   formatCraftingSellSum: number;
   income: number;
 
-  constructor(dataElement:Element) {
-    this.name = dataElement['name'];
-    this.id = dataElement["id"];
-    this.image = dataElement["image"];
-    this.rarityName = dataElement["rarityName"];
-    this.formatSellPrice = +dataElement["formatSellPrice"];
-    this.formatBuyPrice = +dataElement["formatBuyPrice"];
+  constructor(dataElement) {
+    Object.assign(this, dataElement);
+    // this.name = dataElement['name'];
+    // this.id = dataElement["id"];
+    // this.image = dataElement["image"];
+    // this.rarityName = dataElement["rarityName"];
+    // this.formatSellPrice = +dataElement["formatSellPrice"];
+    // this.formatBuyPrice = +dataElement["formatBuyPrice"];
+    // this.formatCraftingSellSum = +dataElement["formatCraftingSellSum"];
     this.isFirstBuild = false;
-    this.formatCraftingSellSum = +dataElement["formatCraftingSellSum"];
     this.getFirstBuild();
     this.income = (this.formatSellPrice - (this.formatSellPrice * 0.1)) - this.formatCraftingSellSum;
   }

@@ -1,9 +1,25 @@
 <hr>
 <div *ngIf="!loading">Loading...</div>
 <div *ngIf="loading">
-  <div class="row align-items-center">
+  <div class="row align-items-center mb-2">
     <div class="col text-center">Image</div>
-    <div class="col text-center">Price</div>
+    <div class="col text-center">
+      Price
+      {{element.formatCraftingSellSum}} / {{element.formatCraftingBuySum}}
+      <div class="price-buttons">
+        <div class="custom-control custom-radio">
+          <input [value]="+element.formatCraftingSellSum" [(ngModel)]="element.resultPrice" (change)="changeResultPriceElement(element,'sell')" type="radio" 
+          id="resultRadio1-{{element.id}}" name="resultRadio-{{element.id}}" class="custom-control-input">
+          <label class="custom-control-label" for="resultRadio1-{{element.id}}">Sell</label>
+        </div>
+        <div class="mx-2">/</div>
+        <div class="custom-control custom-radio">
+          <input [value]="+element.formatCraftingBuySum" [(ngModel)]="element.resultPrice" (change)="changeResultPriceElement(element,'buy')" type="radio" 
+          id="resultRadio2-{{element.id}}" name="resultRadio-{{element.id}}" class="custom-control-input">
+          <label class="custom-control-label" for="resultRadio2-{{element.id}}">Buy</label>
+        </div>
+      </div>
+    </div>
     <div class="col text-center">First build</div>
     <div class="col text-center">Count</div>
     <div class="col text-center">ResultPrice</div>
@@ -11,37 +27,55 @@
 
   <div class="" *ngFor="let ingredient of element.ingredients">
     <div class="row align-items-center">
+      <!-- Image -->
       <div class="col text-center">
         <div [ngClass]="{'image__sub':ingredient.ingredients.length > 3,'image--active':ingredient.showRecipe==true}"
           (click)="showIngredients(ingredient)" class="image"><img src="https://crossoutdb.com/img/items/{{ ingredient.item.image }}"
             alt=""></div>
       </div>
+      <!-- Price -->
       <div class="col sell-buy-col text-center">
         <div class="sell-buy-col__sell">
           <div class="custom-control custom-radio">
-            <input checked (click)="changeSellPrice(ingredient,ingredient.formatSellPriceTimesNumber)" type="radio" id="customRadio1-{{ingredient.id}}"
-              name="customRadio-{{ingredient.id}}" class="custom-control-input">
+            <input
+            [value]="+ingredient.formatSellPriceTimesNumber"
+            [(ngModel)]="+ingredient.resultPrice"
+            (change)="changeResultPriceIngredient(ingredient,'sell')"
+            
+            type="radio"
+            id="customRadio1-{{ingredient.id}}"
+            name="customRadio-{{ingredient.id}}"
+            class="custom-control-input">
             <label class="custom-control-label" for="customRadio1-{{ingredient.id}}">Sell: {{
               ingredient.item.formatSellPrice }}</label>
           </div>
         </div>
         <div class="sell-buy-col__buy">
           <div class="custom-control custom-radio">
-            <input (click)="changeSellPrice(ingredient,ingredient.formatBuyPriceTimesNumber)" type="radio" id="customRadio2-{{ingredient.id}}"
-              name="customRadio-{{ingredient.id}}" class="custom-control-input">
+            <input 
+            [value]="+ingredient.formatBuyPriceTimesNumber" 
+            [(ngModel)]="+ingredient.resultPrice" 
+            (change)="changeResultPriceIngredient(ingredient,'buy')" 
+            type="radio"
+            id="customRadio2-{{ingredient.id}}"
+            name="customRadio-{{ingredient.id}}"
+            class="custom-control-input">
             <label class="custom-control-label" for="customRadio2-{{ingredient.id}}">Buy: {{
               ingredient.item.formatBuyPrice }}</label>
           </div>
         </div>
       </div>
+      <!-- First build -->
       <div class="col text-center">
         <div class="custom-control custom-checkbox" *ngIf="ingredient.firstBuild">
-          <input type="checkbox" class="custom-control-input" id="firstBuild{{ ingredient.id}}" (click)="getChangeCost(ingredient)">
+          <input type="checkbox" class="custom-control-input" id="firstBuild{{ ingredient.id}}" (click)="changeFirstBuild(ingredient)">
           <label class="custom-control-label" for="firstBuild{{ ingredient.id}}">{{ ingredient.firstBuild }}</label>
         </div>
       </div>
+      <!-- Count -->
       <div class="col text-center">{{ ingredient.number }}</div>
-      <div class="col text-center">{{ ingredient.resultPrice }}</div>
+      <!-- ResultPrice -->
+      <div class="col text-center">{{ ingredient.resultPrice | number:'1.0-2' }}</div>
     </div>
     <div *ngIf="ingredient.showRecipe==true">
       <app-recipe [element]="ingredient"></app-recipe>

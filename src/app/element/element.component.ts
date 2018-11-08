@@ -17,6 +17,7 @@ export class ElementComponent implements OnInit {
     this.element.formatCraftingSellSum = event;
   }
   ngOnInit() {
+    this.element.resultPrice = this.element.formatCraftingSellSum;
   }
 
   getRecipe(element) {

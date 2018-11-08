@@ -11,8 +11,8 @@ export class ElementsService {
 
   constructor(private http: HttpClient) { }
 
-  getElements(): Observable<Element[]> {
-    return this.http.get<Element[]>('http://u953420z.beget.tech/');
+  getElements(): Observable<any> {
+    return this.http.get<any>('http://u953420z.beget.tech/');
   }
 
   getRecipe(elementId:number): Observable<any> {
