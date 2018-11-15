@@ -2,11 +2,11 @@
 <div *ngIf="loading">
   <div class="row align-items-center">
     <div class="col text-center">Image</div>
-    <div class="col text-center">Id</div>
     <div class="col text-center">Price</div>
     <div class="col text-center">First build</div>
     <div class="col text-center">ResultPrice</div>
     <div class="col text-center">Income</div>
+    <div class="col text-center">craftVsBuy</div>
   </div>
 
   <app-element *ngFor="let element of elements | pagination:page" [element]="element"></app-element>

@@ -12,32 +12,41 @@ export class ElementComponent implements OnInit {
 
   constructor() { }
 
-  getPriceTmp(event) {
-    console.log(event);
-    this.element.formatCraftingSellSum = event;
+  priceChangeElement(ingredientResultPrice) {
+    this.element.resultPrice = ingredientResultPrice;
+    // console.log('mainChange - ',ingredientResultPrice);
+    this.setIncomeElement();
   }
+
   ngOnInit() {
     this.element.resultPrice = this.element.formatCraftingSellSum;
   }
 
   getRecipe(element) {
     // console.log('show recipe - ',element);
-    if(this.showRecipe == false) {
+    if (this.showRecipe == false) {
       this.showRecipe = true;
     } else {
       this.showRecipe = false;
     }
   }
 
-  getChangeCost(element) {
-    if(element.isFirstBuild == false) {
-      element.isFirstBuild = true;
-      element.formatCraftingSellSum = +element.formatCraftingSellSum + element.firstBuild;
-      element.income = element.income - element.firstBuild;
-    } else {
-      element.isFirstBuild = false;
-      element.formatCraftingSellSum = +element.formatCraftingSellSum - element.firstBuild;
-      element.income = element.income + element.firstBuild;
+  setIncomeElement() {
+    let marketBalance = this.element.formatSellPrice - this.element.formatSellPrice * 0.1;
+    let firstBuild = 0;
+    if (this.element.isFirstBuild) {
+      firstBuild = this.element.firstBuild;
     }
+    let income = marketBalance - this.element.resultPrice - firstBuild;
+    this.element.income = income;
+  }
+
+  setFirstBuild() {
+    if(this.element.isFirstBuild) {
+      this.element.isFirstBuild = false;
+    } else {
+      this.element.isFirstBuild = true;
+    }
+    this.setIncomeElement();
   }
 }

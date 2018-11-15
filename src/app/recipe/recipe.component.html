@@ -5,7 +5,6 @@
     <div class="col text-center">Image</div>
     <div class="col text-center">
       Price
-      {{element.formatCraftingSellSum}} / {{element.formatCraftingBuySum}}
       <div class="price-buttons">
         <div class="custom-control custom-radio">
           <input [value]="+element.formatCraftingSellSum" [(ngModel)]="element.resultPrice" (change)="changeResultPriceElement(element,'sell')" type="radio" 
@@ -23,6 +22,7 @@
     <div class="col text-center">First build</div>
     <div class="col text-center">Count</div>
     <div class="col text-center">ResultPrice</div>
+    <div class="col text-center">craftVsBuy</div>
   </div>
 
   <div class="" *ngFor="let ingredient of element.ingredients">
@@ -41,12 +41,11 @@
             [value]="+ingredient.formatSellPriceTimesNumber"
             [(ngModel)]="+ingredient.resultPrice"
             (change)="changeResultPriceIngredient(ingredient,'sell')"
-            
             type="radio"
-            id="customRadio1-{{ingredient.id}}"
-            name="customRadio-{{ingredient.id}}"
+            id="customRadio1-{{element.id}}-{{ingredient.id}}"
+            name="customRadio-{{element.id}}-{{ingredient.id}}"
             class="custom-control-input">
-            <label class="custom-control-label" for="customRadio1-{{ingredient.id}}">Sell: {{
+            <label class="custom-control-label" for="customRadio1-{{element.id}}-{{ingredient.id}}">Sell: {{
               ingredient.item.formatSellPrice }}</label>
           </div>
         </div>
@@ -57,10 +56,10 @@
             [(ngModel)]="+ingredient.resultPrice" 
             (change)="changeResultPriceIngredient(ingredient,'buy')" 
             type="radio"
-            id="customRadio2-{{ingredient.id}}"
-            name="customRadio-{{ingredient.id}}"
+            id="customRadio2-{{element.id}}-{{ingredient.id}}"
+            name="customRadio-{{element.id}}-{{ingredient.id}}"
             class="custom-control-input">
-            <label class="custom-control-label" for="customRadio2-{{ingredient.id}}">Buy: {{
+            <label class="custom-control-label" for="customRadio2-{{element.id}}-{{ingredient.id}}">Buy: {{
               ingredient.item.formatBuyPrice }}</label>
           </div>
         </div>
@@ -76,9 +75,10 @@
       <div class="col text-center">{{ ingredient.number }}</div>
       <!-- ResultPrice -->
       <div class="col text-center">{{ ingredient.resultPrice | number:'1.0-2' }}</div>
+      <div class="col text-center">{{ ingredient.item.craftVsBuy }}</div>
     </div>
     <div *ngIf="ingredient.showRecipe==true">
-      <app-recipe [element]="ingredient"></app-recipe>
+      <app-recipe [element]="ingredient" (priceChange)="priceChangeElement($event)"></app-recipe>
     </div>
   </div>
 </div>

@@ -10,6 +10,7 @@ export class Element {
   isFirstBuild: boolean;
   formatCraftingSellSum: number;
   income: number;
+  number: number;
 
   constructor(dataElement) {
     Object.assign(this, dataElement);
@@ -22,6 +23,7 @@ export class Element {
     // this.formatCraftingSellSum = +dataElement["formatCraftingSellSum"];
     this.isFirstBuild = false;
     this.getFirstBuild();
+    this.number = 1;
     this.income = (this.formatSellPrice - (this.formatSellPrice * 0.1)) - this.formatCraftingSellSum;
   }
   
