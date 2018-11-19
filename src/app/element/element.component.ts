@@ -12,14 +12,8 @@ export class ElementComponent implements OnInit {
 
   constructor() { }
 
-  priceChangeElement(ingredientResultPrice) {
-    this.element.resultPrice = ingredientResultPrice;
-    // console.log('mainChange - ',ingredientResultPrice);
-    this.setIncomeElement();
-  }
-
   ngOnInit() {
-    this.element.resultPrice = this.element.formatCraftingSellSum;
+    this.element.resultPrice = +this.element.formatCraftingSellSum;
   }
 
   getRecipe(element) {
@@ -31,22 +25,46 @@ export class ElementComponent implements OnInit {
     }
   }
 
-  setIncomeElement() {
-    let marketBalance = this.element.formatSellPrice - this.element.formatSellPrice * 0.1;
-    let firstBuild = 0;
-    if (this.element.isFirstBuild) {
-      firstBuild = this.element.firstBuild;
+  getResultPrice() {
+    let resultPrice = 0;
+    if (this.element.ingredients) {
+      this.element.ingredients.forEach(ingredient => {
+        resultPrice += ingredient.resultPrice;
+      });
+    } else {
+      resultPrice = +this.element.formatCraftingSellSum;
     }
-    let income = marketBalance - this.element.resultPrice - firstBuild;
+    if (this.element.isFirstBuild) {
+      resultPrice += this.element.firstBuild;
+    }
+    return resultPrice;
+  }
+
+  setResultPrice(ingredientResultPrice = 0) {
+    if (!ingredientResultPrice) {
+      this.element.resultPrice = this.getResultPrice();
+    } else {
+      this.element.resultPrice = ingredientResultPrice;
+    }
+    this.setIncomeElement();
+  }
+
+  changeResultPriceRecipe(ingredientResultPrice) {
+    this.setResultPrice(ingredientResultPrice);
+  }
+
+  setIncomeElement() {
+    let marketBalance = this.element.formatSellPrice - (this.element.formatSellPrice * 0.1);
+    let income = marketBalance - this.element.resultPrice;
     this.element.income = income;
   }
 
-  setFirstBuild() {
-    if(this.element.isFirstBuild) {
+  changeFastBuild() {
+    if (this.element.isFirstBuild) {
       this.element.isFirstBuild = false;
     } else {
       this.element.isFirstBuild = true;
     }
-    this.setIncomeElement();
+    this.setResultPrice();
   }
 }

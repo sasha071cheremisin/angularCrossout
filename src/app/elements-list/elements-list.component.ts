@@ -27,7 +27,6 @@ export class ElementsListComponent implements OnInit {
   }
 
   private loadElements() {
-    //запрос с сервера, элементов
     this.elementsService.getElements()
     .subscribe((elements) => {
       elements.forEach(element => {
@@ -35,20 +34,6 @@ export class ElementsListComponent implements OnInit {
       });
       this.collectionSize = elements.length;
       this.loading = true;
-
-      //запрос с сервера, рецептов для каждого элемента
-      //пришлось делать внутри запроса элементов, иначе массива элементов не будет
-      // this.elements.forEach((element,index) => {
-      //   element.recipe = this.elementsService.getRecipe(element.id).subscribe(
-      //     (recipe => {
-      //       this.elements[index].recipe = recipe['recipe']['ingredients'];
-      //     })
-      //   );
-      // });
-      
-      // console.log(this.elements);
     });
-    
-    
   }
 }

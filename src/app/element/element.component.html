@@ -12,7 +12,7 @@
   <!-- firstBuild -->
   <div class="col text-center">
     <div class="custom-control custom-checkbox">
-      <input type="checkbox" class="custom-control-input" id="firstBuild{{ element.id}}" (click)="setFirstBuild($event)">
+      <input type="checkbox" class="custom-control-input" id="firstBuild{{ element.id}}" (click)="changeFastBuild($event)">
       <label class="custom-control-label" for="firstBuild{{ element.id}}">{{ element.firstBuild }}</label>
     </div>
   </div>
@@ -23,5 +23,5 @@
   <div class="col text-center">{{ element.craftVsBuy }}</div>
 </div>
 
-  <app-recipe [element] = "element" *ngIf="showRecipe" (priceChange)="priceChangeElement($event)"></app-recipe>
+  <app-recipe [element] = "element" *ngIf="showRecipe" (changeResultPriceRecipe)="changeResultPriceRecipe($event)"></app-recipe>
  

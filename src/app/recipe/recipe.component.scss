@@ -1,6 +1,14 @@
 .price-buttons {
     display: flex;
 }
+
+.editor {
+    color: red;
+
+    &--color-green {
+        color: green;  
+    }
+}
 .image {
     width: 50px;
     margin: 0 auto;

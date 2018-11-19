@@ -9,7 +9,7 @@ import { ElementsService } from '../elements.service';
 export class RecipeComponent implements OnInit {
 
   @Input() element;
-  @Output() priceChange = new EventEmitter();
+  @Output() changeResultPriceRecipe = new EventEmitter();
 
   loading: boolean = false;
 
@@ -40,99 +40,129 @@ export class RecipeComponent implements OnInit {
   }
 
   changeFirstBuild(ingredient) {
-    if (!ingredient.isFirstBuild || ingredient.isFirstBuild == false) {
-      ingredient.resultPrice += ingredient.firstBuild * ingredient.number;
+    // console.log('changeFirstBuild');
+
+    ingredient.editor = true;
+    if (ingredient.isFirstBuild == false) {
       ingredient.isFirstBuild = true;
     } else {
-      ingredient.resultPrice -= ingredient.firstBuild * ingredient.number;
       ingredient.isFirstBuild = false;
     }
 
+    ingredient.resultPrice = this.getResultPrice(ingredient);
+    this.element.resultPrice = this.getResultPrice(this.element);
+    this.changeResultPriceRecipe.emit(this.element.resultPrice);
   }
 
-  changeResultPriceElement(element, formatResultPrice='') {
+  changeResultPriceAllItems(element, formatResultPrice = '') {
+    // console.log('changeResultPriceAllItems');
+
     element.resultPrice = 0;
-    if (formatResultPrice == 'sell') {
-      element.ingredients.forEach(ingredient => {
+
+    element.ingredients.forEach(ingredient => {
+      ingredient.isFirstBuild = false;
+      ingredient.editor = false;
+      if (formatResultPrice == 'sell') {
         ingredient.resultPrice = +ingredient.formatSellPriceTimesNumber;
         element.resultPrice += +ingredient.formatSellPriceTimesNumber;
         element.formatCraftingSellSum = element.resultPrice;
-      });
-    } else {
-      element.ingredients.forEach(ingredient => {
+      } else {
         ingredient.resultPrice = +ingredient.formatBuyPriceTimesNumber;
         element.resultPrice += +ingredient.formatBuyPriceTimesNumber;
         element.formatCraftingBuySum = element.resultPrice;
-      });
-    }
-      element.resultPrice *= element.number;
-      element.formatCraftingBuySum *= element.number;
-      element.formatCraftingSellSum *= element.number;
+      }
+    });
 
-    this.priceChange.emit(this.getElementResultPrice());
+    element.resultPrice *= element.number;
+    element.formatCraftingBuySum *= element.number;
+    element.formatCraftingSellSum *= element.number;
+
+    this.element.resultPrice = this.getResultPrice(this.element);
+    this.changeResultPriceRecipe.emit(this.element.resultPrice);
     // console.log(element.resultPrice, element.formatCraftingBuySum, element.formatCraftingSellSum);
   }
 
-  changeResultPriceIngredient(ingredient, formatResultPrice) {
+  changeResultPriceOneItem(ingredient, formatResultPrice) {
+    // console.log('changeResultPriceOneItem');
+
+    ingredient.editor = false;
     ingredient.formatResultPrice = formatResultPrice;
+    ingredient.isFirstBuild = false;
     if (formatResultPrice == 'sell') {
       ingredient.resultPrice = +ingredient.formatSellPriceTimesNumber;
     } else {
       ingredient.resultPrice = +ingredient.formatBuyPriceTimesNumber;
     }
 
-    this.element.resultPrice = 0;
-    this.element.ingredients.forEach(ingredientEl => {
-      this.element.resultPrice += +ingredientEl.resultPrice;
-    });
-    this.element.resultPrice *= this.element.number;
-    // if(ingredient.ingredients.length != 0) {
-    //   ingredient.ingredients.forEach(subIngredient => {
-    //     subIngredient.formatResultPrice = formatResultPrice;
-    //     if(formatResultPrice == 'sell') {
-    //       subIngredient.resultPrice = +subIngredient.formatSellPriceTimesNumber;
-    //     } else {
-    //       subIngredient.resultPrice = +subIngredient.formatBuyPriceTimesNumber;
-    //     }
-    //   });
-    // }
-    this.priceChange.emit(this.getElementResultPrice());
+    this.element.resultPrice = this.getResultPrice(this.element);
+    this.changeResultPriceRecipe.emit(this.element.resultPrice);
   }
 
-  priceChangeElement(ingredientResultPrice) {
-    this.element.resultPrice = this.getElementResultPrice();
-    // console.log('ingredientChange - ',ingredientResultPrice);
-    this.priceChange.emit(this.getElementResultPrice());
+  changePriceSubElement(ingredient) {
+    console.log('changePriceSubElement');
+
+    ingredient.editor = true;
+    this.element.resultPrice = this.getResultPrice(this.element);
+    this.changeResultPriceRecipe.emit(this.element.resultPrice);
   }
 
-  getElementResultPrice() {
+  getResultPrice(element) {
+    // console.log('getResultPrice');
+
     var resultPrice = 0;
-    this.element.ingredients.forEach(ingredient => {
+    element.ingredients.forEach(ingredient => {
       resultPrice += +ingredient.resultPrice;
     });
-    return (resultPrice * this.element.number);
+    if (element.isFirstBuild) {
+      resultPrice += element.firstBuild;
+    }
+    return (resultPrice * element.number);
+  }
+
+  setCraftVsBuy(ingredient) {
+    if (ingredient.ingredients.length > 3) {
+      let resultPriseIngredient = 0;
+      ingredient.ingredients.forEach(ingredientSub => {
+        this.setCraftVsBuy(ingredientSub);
+        resultPriseIngredient += +ingredientSub.formatBuyPriceTimesNumber;
+      });
+      let result = 'Craft';
+      if ((+ingredient.item.formatBuyPrice) < resultPriseIngredient) {
+        result = 'Buy';
+      }
+      if (resultPriseIngredient == 0) {
+        result = '';
+      }
+      // console.log(ingredient);
+      ingredient.item.craftVsBuy = result;
+    }
+  }
+
+  setFastBuild(ingredient) {
+    ingredient.ingredients.forEach(ingredientSub => {
+      this.setFastBuild(ingredientSub);
+    });
+    ingredient.isFirstBuild = false;
+    if (ingredient.item.typeName != 'Meta Item') {
+      switch (ingredient.item.rarityName) {
+        case "Rare":
+          ingredient.firstBuild = 5
+          break;
+        case "Epic":
+          ingredient.firstBuild = 20
+          break;
+        default:
+          break;
+      }
+    }
   }
 
   ingredientSetting(ingredients) {
     ingredients.forEach(ingredient => {
+      this.setFastBuild(ingredient);
+      this.setCraftVsBuy(ingredient);
       ingredient.resultPrice = +ingredient.formatSellPriceTimesNumber;
       ingredient.formatResultPrice = 'sell';
-      if (ingredient.item.typeName != 'Meta Item') {
-        switch (ingredient.item.rarityName) {
-          case "Rare":
-            ingredient.firstBuild = 5
-            break;
-          case "Epic":
-            ingredient.firstBuild = 20
-            break;
-          default:
-            break;
-        }
-      }
-
-      // if(ingredient.ingredients.length != 0) {
-      //   this.ingredientSetting(ingredient.ingredients);
-      // }
     });
   }
 
@@ -142,6 +172,7 @@ export class RecipeComponent implements OnInit {
         this.element.ingredients = recipe['recipe']['recipe']['ingredients'];
         // this.element.recipe.sumPrise = 0;
         this.ingredientSetting(this.element.ingredients);
+        this.element.editor = true;
         console.log(this.element);
         this.loading = true;
       });
