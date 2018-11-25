@@ -13,7 +13,9 @@ export class ElementComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.element.resultPrice = +this.element.formatCraftingSellSum;
+    if(this.element.income < 0) {
+      this.element.craftVsBuy = "Buy";
+    }
   }
 
   getRecipe(element) {
@@ -50,13 +52,46 @@ export class ElementComponent implements OnInit {
   }
 
   changeResultPriceRecipe(ingredientResultPrice) {
+    // console.log('changeResultPriceRecipe');
+
     this.setResultPrice(ingredientResultPrice);
+    this.setСonstructionTime();
   }
+
+  getСonstructionTime(element) {
+    let resultTime = 0;
+    element.ingredients.forEach(ingredient => {
+      if(ingredient.ingredients.length > 3){
+        if(!ingredient.isFirstBuild && ingredient.editor) {
+          resultTime += (ingredient.constructionTime * ingredient.number);
+        }
+      }
+    });
+
+    return resultTime;
+  }
+
+  setСonstructionTime() {
+    let resultTime = this.getСonstructionTime(this.element);
+    this.element.ingredients.forEach(ingredient => {
+      resultTime += this.getСonstructionTime(ingredient);
+    });
+    this.element.resultConstructionTime = this.element.constructionTime + resultTime;
+    // console.log(resultTime);
+  } 
 
   setIncomeElement() {
     let marketBalance = this.element.formatSellPrice - (this.element.formatSellPrice * 0.1);
     let income = marketBalance - this.element.resultPrice;
     this.element.income = income;
+  }
+
+  setConstructionTime() {
+    if(this.element.isFirstBuild) {
+      this.element.resultConstructionTime -= this.element.constructionTime;
+    } else {
+      this.element.resultConstructionTime = this.element.constructionTime;
+    }
   }
 
   changeFastBuild() {
@@ -66,5 +101,6 @@ export class ElementComponent implements OnInit {
       this.element.isFirstBuild = true;
     }
     this.setResultPrice();
+    this.setConstructionTime();
   }
 }

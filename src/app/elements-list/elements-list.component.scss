@@ -1,4 +1,16 @@
 .image {
     width: 70px;
 }
-    
+.elements-list {
+    position: relative;
+    &__header {
+        position: sticky;
+        top: 0;
+        background: white;
+        z-index: 200;
+        border-bottom: 1px solid #007bff;
+    }
+}
+hr {
+    border-color: #007bff;
+}

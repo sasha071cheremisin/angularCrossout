@@ -25,7 +25,8 @@ export class RecipeComponent implements OnInit {
 
   showIngredients(ingredient) {
     console.log(ingredient);
-
+    
+    ingredient.isSubRecipe = true;
     if (ingredient.ingredients.length > 3) {
       if (ingredient.showRecipe) {
         if (ingredient.showRecipe == false) {
@@ -62,6 +63,9 @@ export class RecipeComponent implements OnInit {
     element.ingredients.forEach(ingredient => {
       ingredient.isFirstBuild = false;
       ingredient.editor = false;
+      ingredient.ingredients.forEach(subIngredient => {
+        subIngredient.editor = false;
+      });
       if (formatResultPrice == 'sell') {
         ingredient.resultPrice = +ingredient.formatSellPriceTimesNumber;
         element.resultPrice += +ingredient.formatSellPriceTimesNumber;
@@ -86,6 +90,9 @@ export class RecipeComponent implements OnInit {
     // console.log('changeResultPriceOneItem');
 
     ingredient.editor = false;
+    ingredient.ingredients.forEach(subIngredient => {
+      subIngredient.editor = false;
+    });
     ingredient.formatResultPrice = formatResultPrice;
     ingredient.isFirstBuild = false;
     if (formatResultPrice == 'sell') {
@@ -99,7 +106,7 @@ export class RecipeComponent implements OnInit {
   }
 
   changePriceSubElement(ingredient) {
-    console.log('changePriceSubElement');
+    // console.log('changePriceSubElement');
 
     ingredient.editor = true;
     this.element.resultPrice = this.getResultPrice(this.element);
@@ -147,9 +154,11 @@ export class RecipeComponent implements OnInit {
       switch (ingredient.item.rarityName) {
         case "Rare":
           ingredient.firstBuild = 5
+          ingredient.constructionTime = 1;
           break;
         case "Epic":
           ingredient.firstBuild = 20
+          ingredient.constructionTime = 6;
           break;
         default:
           break;

@@ -1,21 +1,21 @@
-<hr>
-<div *ngIf="!loading">Loading...</div>
-<div *ngIf="loading">
-    <div [ngClass]="{'editor--color-green':element.editor == true}" class="editor row align-items-center mb-2 justify-content-center">Craft</div>
-  <div class="row align-items-center mb-2">
+<div *ngIf="!loading" class="py-3">Loading...</div>
+<div *ngIf="loading" class="ingredient-list" [ngClass]="{'ingredient-list--color-green':element.editor == true}">
+  
+  <div class="ingredient-head" [ngClass]="{'ingredient-head__sub':element.isSubRecipe == true}">
+  <div class="row align-items-center py-2 ">
     <div class="col text-center">Image</div>
     <div class="col text-center">
       Price
       <div class="price-buttons">
         <div class="custom-control custom-radio">
-          <input [value]="+element.formatCraftingSellSum" [(ngModel)]="element.resultPrice" (change)="changeResultPriceAllItems(element,'sell')" type="radio" 
-          id="resultRadio1-{{element.id}}" name="resultRadio-{{element.id}}" class="custom-control-input">
+          <input [value]="+element.formatCraftingSellSum" [(ngModel)]="element.resultPrice" (change)="changeResultPriceAllItems(element,'sell')"
+            type="radio" id="resultRadio1-{{element.id}}" name="resultRadio-{{element.id}}" class="custom-control-input">
           <label class="custom-control-label" for="resultRadio1-{{element.id}}">Sell</label>
         </div>
         <div class="mx-2">/</div>
         <div class="custom-control custom-radio">
-          <input [value]="+element.formatCraftingBuySum" [(ngModel)]="element.resultPrice" (change)="changeResultPriceAllItems(element,'buy')" type="radio" 
-          id="resultRadio2-{{element.id}}" name="resultRadio-{{element.id}}" class="custom-control-input">
+          <input [value]="+element.formatCraftingBuySum" [(ngModel)]="element.resultPrice" (change)="changeResultPriceAllItems(element,'buy')"
+            type="radio" id="resultRadio2-{{element.id}}" name="resultRadio-{{element.id}}" class="custom-control-input">
           <label class="custom-control-label" for="resultRadio2-{{element.id}}">Buy</label>
         </div>
       </div>
@@ -25,64 +25,62 @@
     <div class="col text-center">ResultPrice</div>
     <div class="col text-center">craftVsBuy</div>
   </div>
+  <hr class="hr-ingredient-head">
+</div>
 
-  <div class="" *ngFor="let ingredient of element.ingredients">
-    <div class="row align-items-center">
-      <!-- Image -->
-      <div class="col text-center">
-        <div [ngClass]="{'image__sub':ingredient.ingredients.length > 3,'image--active':ingredient.showRecipe==true}"
-          (click)="showIngredients(ingredient)" class="image"><img src="https://crossoutdb.com/img/items/{{ ingredient.item.image }}"
-            alt=""></div>
-      </div>
-      <!-- Price -->
-      <div class="col sell-buy-col text-center">
-        <div class="sell-buy-col__sell">
-          <div class="custom-control custom-radio">
-            <input
-            [value]="+ingredient.formatSellPriceTimesNumber"
-            [(ngModel)]="+ingredient.resultPrice"
-            (change)="changeResultPriceOneItem(ingredient,'sell')"
-            type="radio"
-            id="customRadio1-{{element.id}}-{{ingredient.id}}"
-            name="customRadio-{{element.id}}-{{ingredient.id}}"
-            class="custom-control-input">
-            <label class="custom-control-label" for="customRadio1-{{element.id}}-{{ingredient.id}}">Sell: {{
-              ingredient.item.formatSellPrice }}</label>
+  <div class="ingredient" *ngFor="let ingredient of element.ingredients">
+
+    <div [ngClass]="{'ingredient-sticy':ingredient.showRecipe==true}">
+      <div class="row align-items-center py-2">
+        <!-- Image -->
+        <div class="col text-center">
+          <div [ngClass]="{'image__sub':ingredient.ingredients.length > 3,'image--active':ingredient.showRecipe==true}"
+            (click)="showIngredients(ingredient)" class="image"><img src="https://crossoutdb.com/img/items/{{ ingredient.item.image }}"
+              alt=""></div>
+        </div>
+        <!-- Price -->
+        <div class="col sell-buy-col text-center">
+          <div class="sell-buy-col__sell">
+            <div class="custom-control custom-radio">
+              <input [value]="+ingredient.formatSellPriceTimesNumber" [(ngModel)]="+ingredient.resultPrice" (change)="changeResultPriceOneItem(ingredient,'sell')"
+                type="radio" id="customRadio1-{{element.id}}-{{ingredient.id}}" name="customRadio-{{element.id}}-{{ingredient.id}}"
+                class="custom-control-input">
+              <label class="custom-control-label" for="customRadio1-{{element.id}}-{{ingredient.id}}">Sell: {{
+                ingredient.item.formatSellPrice }}</label>
+            </div>
+          </div>
+          <div class="sell-buy-col__buy">
+            <div class="custom-control custom-radio">
+              <input [value]="+ingredient.formatBuyPriceTimesNumber" [(ngModel)]="+ingredient.resultPrice" (change)="changeResultPriceOneItem(ingredient,'buy')"
+                type="radio" id="customRadio2-{{element.id}}-{{ingredient.id}}" name="customRadio-{{element.id}}-{{ingredient.id}}"
+                class="custom-control-input">
+              <label class="custom-control-label" for="customRadio2-{{element.id}}-{{ingredient.id}}">Buy: {{
+                ingredient.item.formatBuyPrice }}</label>
+            </div>
           </div>
         </div>
-        <div class="sell-buy-col__buy">
-          <div class="custom-control custom-radio">
-            <input 
-            [value]="+ingredient.formatBuyPriceTimesNumber" 
-            [(ngModel)]="+ingredient.resultPrice" 
-            (change)="changeResultPriceOneItem(ingredient,'buy')" 
-            type="radio"
-            id="customRadio2-{{element.id}}-{{ingredient.id}}"
-            name="customRadio-{{element.id}}-{{ingredient.id}}"
-            class="custom-control-input">
-            <label class="custom-control-label" for="customRadio2-{{element.id}}-{{ingredient.id}}">Buy: {{
-              ingredient.item.formatBuyPrice }}</label>
+        <!-- Fast build -->
+        <div class="col text-center">
+          <div class="custom-control custom-checkbox" *ngIf="ingredient.firstBuild">
+            <input [checked]="ingredient.isFirstBuild == true" type="checkbox" class="custom-control-input" id="firstBuild{{ ingredient.id}}"
+              (click)="changeFirstBuild(ingredient)">
+            <label class="custom-control-label" for="firstBuild{{ ingredient.id}}">{{ ingredient.firstBuild }}</label>
           </div>
         </div>
-      </div>
-      <!-- Fast build -->
-      <div class="col text-center">
-        <div class="custom-control custom-checkbox" *ngIf="ingredient.firstBuild">
-          <input [checked]="ingredient.isFirstBuild == true" 
-          type="checkbox" class="custom-control-input" id="firstBuild{{ ingredient.id}}" (click)="changeFirstBuild(ingredient)">
-          <label class="custom-control-label" for="firstBuild{{ ingredient.id}}">{{ ingredient.firstBuild }}</label>
+        <!-- Count -->
+        <div class="col text-center">{{ ingredient.number }}</div>
+        <!-- ResultPrice -->
+        <div class="col text-center">{{ ingredient.resultPrice | number:'1.0-2' }}</div>
+        <div class="col text-center">
+          <div *ngIf="ingredient.ingredients.length > 3">{{ ingredient.item.craftVsBuy }}</div>
         </div>
       </div>
-      <!-- Count -->
-      <div class="col text-center">{{ ingredient.number }}</div>
-      <!-- ResultPrice -->
-      <div class="col text-center">{{ ingredient.resultPrice | number:'1.0-2' }}</div>
-      <div class="col text-center" >
-        <div *ngIf="ingredient.ingredients.length > 3">{{ ingredient.item.craftVsBuy }}</div></div>
+      <hr class="hr" [ngClass]="{'hr--green':ingredient.editor == true}" *ngIf="ingredient.showRecipe==true">
     </div>
+
     <div *ngIf="ingredient.showRecipe==true">
       <app-recipe [element]="ingredient" (changeResultPriceRecipe)="changePriceSubElement(ingredient)"></app-recipe>
     </div>
+
   </div>
 </div>
-<hr>

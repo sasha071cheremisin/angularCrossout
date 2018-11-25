@@ -12,7 +12,7 @@ export class ElementsService {
   constructor(private http: HttpClient) { }
 
   getElements(): Observable<any> {
-    return this.http.get<any>('http://u953420z.beget.tech/');
+    return this.http.get<any>('http://u953420z.beget.tech/elements/');
   }
 
   getRecipe(elementId:number): Observable<any> {

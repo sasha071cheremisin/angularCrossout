@@ -1,4 +1,6 @@
 .image {
+    width: 72px;
+    margin: 0 auto;
     cursor: pointer;
     position: relative;
     &::after {
@@ -16,5 +18,19 @@
         &::after {
             content: '-';
         }
+    }
+}
+hr {
+    border-color: lightgreen;
+    margin: 0;
+}
+.element {
+    position: relative;
+    border-bottom: 1px solid #007bff;
+    &__header {
+        position: sticky;
+        top: 81px;
+        background-color: white;
+        z-index: 150;
     }
 }

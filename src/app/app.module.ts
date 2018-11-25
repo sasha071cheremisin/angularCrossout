@@ -5,18 +5,24 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { ElementsListComponent } from './elements-list/elements-list.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { PaginationPipe } from './pagination.pipe';
 import { ElementComponent } from './element/element.component';
 import { RecipeComponent } from './recipe/recipe.component';
 import { FormsModule } from '@angular/forms';
+import { FilterComponent } from './filter/filter.component';
+import { FilterFactionPipe } from './filter-faction.pipe';
+import { FilterRarityPipe } from './filter-rarity.pipe';
+import { FilterIncomePipe } from './filter-income.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     ElementsListComponent,
-    PaginationPipe,
     ElementComponent,
     RecipeComponent,
+    FilterComponent,
+    FilterFactionPipe,
+    FilterRarityPipe,
+    FilterIncomePipe,
   ],
   imports: [
     BrowserModule,

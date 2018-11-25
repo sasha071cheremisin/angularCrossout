@@ -1,0 +1,40 @@
+<div class="d-flex justify-content-between align-items-center flex-wrap my-4">
+<div class="btn-group btn-group-toggle my-2" ngbRadioGroup name="faction" [(ngModel)]="factionName" (change)="changeFaction()">
+  <label ngbButtonLabel class="btn-primary">
+    <input ngbButton type="radio" value="All"> All
+  </label>
+  <label ngbButtonLabel class="btn-primary">
+    <input ngbButton type="radio" value="Lunatics"> Lunatics
+  </label>
+  <label ngbButtonLabel class="btn-primary">
+    <input ngbButton type="radio" value="Nomads"> Nomads
+  </label>
+  <label ngbButtonLabel class="btn-primary">
+    <input ngbButton type="radio" value="Scavanger"> Scavanger
+  </label>
+  <label ngbButtonLabel class="btn-primary">
+    <input ngbButton type="radio" value="Steppenwolfs"> Steppenwolfs
+  </label>
+  <label ngbButtonLabel class="btn-primary">
+    <input ngbButton type="radio" value="Dawn's Children"> Dawn's Children
+  </label>
+  <label ngbButtonLabel class="btn-primary">
+    <input ngbButton type="radio" value="Firestarters"> Firestarters
+  </label>
+</div>
+
+<div class="btn-group btn-group-toggle my-2" ngbRadioGroup name="rarity" [(ngModel)]="rarityName" (change)="changeRarity()">
+  <label ngbButtonLabel class="btn-primary">
+    <input ngbButton type="radio" value="All"> All
+  </label>
+  <label ngbButtonLabel class="btn-primary">
+    <input ngbButton type="radio" value="Rare"> Rare
+  </label>
+  <label ngbButtonLabel class="btn-primary">
+    <input ngbButton type="radio" value="Epic"> Epic
+  </label>
+  <label ngbButtonLabel class="btn-primary">
+    <input ngbButton type="radio" value="Legendary"> Legendary
+  </label>
+</div>
+</div>

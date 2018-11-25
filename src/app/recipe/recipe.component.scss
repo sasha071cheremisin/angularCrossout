@@ -2,20 +2,56 @@
     display: flex;
 }
 
-.editor {
-    color: red;
-
-    &--color-green {
-        color: green;  
+.hr {
+    border-color: red;
+    margin: 0;
+    &--green {
+        border-color: lightgreen;
     }
 }
+
+.ingredient {
+    position: relative;
+}
+.ingredient-list {
+    padding-left: 30px;
+    border-bottom: 1px solid red;
+    &--color-green {
+        border-bottom: 1px solid lightgreen;
+    }
+}
+.ingredient-sticy {
+    position: sticky;
+    top: 186px;
+    background: white;
+    z-index: 110;
+}
+.ingredient-head {
+    position: sticky;
+    top: 186px;
+    background: white;
+    z-index: 100;
+    &__sub {
+        top: 253px;
+    }
+}
+.hr-ingredient-head {
+    border-top: 1px solid rgba(0,0,0,.1);
+    margin: 0;
+}
+.editor {
+    color: red;
+    &--color-green {
+        color: green;
+    }
+}
+
 .image {
     width: 50px;
     margin: 0 auto;
     img {
         width: 50px;
     }
-
     &__sub {
         position: relative;
         cursor: pointer;

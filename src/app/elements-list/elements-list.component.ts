@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Element } from '../element';
 import { ElementsService } from '../elements.service';
 
-const elementsPerPage: number = 5;
-
 @Component({
   selector: 'app-elements-list',
   templateUrl: './elements-list.component.html',
@@ -12,18 +10,25 @@ const elementsPerPage: number = 5;
 export class ElementsListComponent implements OnInit {
 
   elements: Element[] = [];
-  page: number;
-  collectionSize: number;
-  pageSize: number;
   loading: boolean;
+  filterFactionName: string;
+  filterRarityName: string;
 
   constructor(private elementsService: ElementsService) { }
 
   ngOnInit() {
-    this.page = 1;
-    this.pageSize = elementsPerPage;
     this.loading = false;
     this.loadElements();
+    this.filterFactionName = 'All';
+    this.filterRarityName = 'All';
+  }
+
+  changeFilterFaction(factionName) {
+    this.filterFactionName = factionName;
+  }
+
+  changeFilterRarity(rarityName) {
+    this.filterRarityName = rarityName;
   }
 
   private loadElements() {
@@ -32,7 +37,6 @@ export class ElementsListComponent implements OnInit {
       elements.forEach(element => {
         this.elements.push(new Element(element));
       });
-      this.collectionSize = elements.length;
       this.loading = true;
     });
   }

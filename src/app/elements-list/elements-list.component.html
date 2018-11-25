@@ -1,16 +1,19 @@
 <div *ngIf="!loading" class="text-center">Loading ...</div>
 <div *ngIf="loading">
-  <div class="row align-items-center">
-    <div class="col text-center">Image</div>
-    <div class="col text-center">Price</div>
-    <div class="col text-center">Fast build</div>
-    <div class="col text-center">ResultPrice</div>
-    <div class="col text-center">Income</div>
-    <div class="col text-center">craftVsBuy</div>
+  <app-filter (factionFilter)="changeFilterFaction($event)" (rarityFilter)="changeFilterRarity($event)"></app-filter>
+  <div class="elements-list">
+      <div class="row align-items-center elements-list__header py-3">
+        <div class="col text-center">Image</div>
+        <div class="col text-center">Price
+        </div>
+        <div class="col text-center">Fast build</div>
+        <div class="col text-center">ResultPrice</div>
+        <div class="col text-center">Income</div>
+        <div class="col text-center">Сonstruction time (hours)</div>
+      </div>
+     
+
+    <app-element *ngFor="let element of elements | filterIncome | filterFaction:filterFactionName | filterRarity:filterRarityName"
+      [element]="element"></app-element>
   </div>
-
-  <app-element *ngFor="let element of elements | pagination:page" [element]="element"></app-element>
-
-  <ngb-pagination class="d-flex justify-content-center mt-3" [pageSize]="pageSize" [collectionSize]="collectionSize"
-    [(page)]="page" [maxSize]="5" [boundaryLinks]="true"></ngb-pagination>
 </div>

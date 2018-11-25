@@ -1,4 +1,7 @@
-<div class="row align-items-center">
+<div class="element ">
+
+  <div class="element__header">
+<div class="row align-items-center py-3">
   <!-- image -->
   <div class="col text-center" (click)="getRecipe(element)" >
     <div [ngClass]="{'image--active':showRecipe==true}" class="image"><img class="image" src="https://crossoutdb.com/img/items/{{ element.image }}"
@@ -20,8 +23,10 @@
   <div class="col text-center">{{ element.resultPrice | number:'1.0-2' }}</div>
   <!-- income -->
   <div class="col text-center">{{ element.income | number:'1.0-2' }}</div>
-  <div class="col text-center">{{ element.craftVsBuy }}</div>
+  <div class="col text-center">{{ element.resultConstructionTime }}</div>
+</div>
+<hr *ngIf="showRecipe">
 </div>
 
   <app-recipe [element] = "element" *ngIf="showRecipe" (changeResultPriceRecipe)="changeResultPriceRecipe($event)"></app-recipe>
- 
+</div>
